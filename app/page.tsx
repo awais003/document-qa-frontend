@@ -49,7 +49,7 @@ export default function DocumentQA() {
   const fetchFiles = async () => {
     setFileLoading(true);
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/v1/files");
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/files`);
       if (!response.ok) throw new Error("Failed to fetch files");
       const data = await response.json();
       setFiles(data.files || []);
@@ -82,7 +82,7 @@ export default function DocumentQA() {
       const uploadPromises = selectedFiles.map(async (file) => {
         const formData = new FormData();
         formData.append("files", file);
-        return fetch("http://127.0.0.1:8000/api/v1/upload", {
+        return fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/upload`, {
           method: "POST",
           body: formData,
         });
@@ -103,7 +103,7 @@ export default function DocumentQA() {
 
   const handleDownload = async (filePath: string, fileName: string) => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000${filePath}`);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${filePath}`);
       if (!response.ok) throw new Error("Download failed");
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
@@ -132,7 +132,7 @@ export default function DocumentQA() {
 
     try {
       const response = await fetch(
-        `http://localhost:8000/api/v1/search?query=${encodeURIComponent(currentQuery)}&session_id=${sessionId}`
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/search?query=${encodeURIComponent(currentQuery)}&session_id=${sessionId}`
       );
 
       if (!response.ok) throw new Error("Connection failed");
